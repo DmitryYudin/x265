@@ -59,12 +59,24 @@
 #define PROFILE_INIT()       vtuneInit()
 #define PROFILE_PAUSE()      __itt_pause()
 #define PROFILE_RESUME()     __itt_resume()
+#elif 1
+#include <fpsprof/fpsprof.h>
+#define ProfileScopeFrameEvent(x) FPSPROF_SCOPED_FRAME(#x)
+#define ProfileScopeEvent(x) FPSPROF_SCOPED(#x)
+#define THREAD_NAME(n,i)
+#define PROFILE_INIT()       FPSPROF_SERIALIZE_FILE("fpsprof.log"); \
+                             FPSPROF_REPORT_STREAM(stdout)
+#define PROFILE_PAUSE()
+#define PROFILE_RESUME()
 #else
 #define ProfileScopeEvent(x)
 #define THREAD_NAME(n,i)
 #define PROFILE_INIT()
 #define PROFILE_PAUSE()
 #define PROFILE_RESUME()
+#endif
+#ifndef ProfileScopeFrameEvent
+#define ProfileScopeFrameEvent(x) ProfileScopeEvent(x)
 #endif
 
 #define FENC_STRIDE 64

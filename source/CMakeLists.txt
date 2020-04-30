@@ -467,6 +467,14 @@ if(POWER)
     endif()
 endif()
 
+# Normally, the dependency management in CMake requires two line of code:
+#   add_subdirectory(path_to_your_library, local_path_to_store_artifacts)
+#   target_link_libray(module, your_library)
+# The x265 project composed of several projects sharing the same include
+# path, we have to update this path manually.
+add_subdirectory(../../fpsprof third_party/fpsprof)
+include_directories($<TARGET_PROPERTY:libfpsprof,INTERFACE_INCLUDE_DIRECTORIES>)
+
 include(version) # determine X265_VERSION and X265_LATEST_TAG
 include_directories(. common encoder "${PROJECT_BINARY_DIR}")
 
@@ -548,6 +556,7 @@ if(ENABLE_HDR10_PLUS)
 else()
     add_library(x265-static STATIC $<TARGET_OBJECTS:encoder> $<TARGET_OBJECTS:common> ${ASM_OBJS})
 endif()
+target_link_libraries(x265-static libfpsprof)
 if(NOT MSVC)
     set_target_properties(x265-static PROPERTIES OUTPUT_NAME x265)
 endif()

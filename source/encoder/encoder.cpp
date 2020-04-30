@@ -1576,6 +1576,8 @@ void Encoder::findSceneCuts(x265_picture *pic, bool& bDup, double maxUVSad, doub
  *         negative on malloc error or abort */
 int Encoder::encode(const x265_picture* pic_in, x265_picture* pic_out)
 {
+    ProfileScopeFrameEvent(Encoder::encode);
+
 #if CHECKED_BUILD || _DEBUG
     if (g_checkFailures)
     {
