@@ -617,7 +617,7 @@ endif()
 if(NOT (MSVC_IDE OR XCODE))
     add_custom_target(clean-generated COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/clean-generated.cmake)
 endif()
-option(ENABLE_SHARED "Build shared library" ON)
+option(ENABLE_SHARED "Build shared library" OFF)
 if(ENABLE_SHARED)
     if(ENABLE_HDR10_PLUS)
         add_library(x265-shared SHARED "${PROJECT_BINARY_DIR}/x265.def" ${ASM_OBJS}
